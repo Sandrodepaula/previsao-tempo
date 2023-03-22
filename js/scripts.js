@@ -1,6 +1,6 @@
 //Váriaveis e seleção de elementos
 const apiKey = "f91529f7f5cf35b6524901f2d75a5d71";
-const apiCountryURL = "https://flagsapi.com/BR/flat/64.png";
+const apiCountryURL = "https://countryflagsapi.com/png/";
 
 const cityInput = document.querySelector("#city-input");
 const searchBtn = document.querySelector("#search");
@@ -10,8 +10,10 @@ const tempElement = document.querySelector("#temperature span");
 const descElement = document.querySelector("#description");
 const weatherIconElement = document.querySelector("#weather-icon");
 const countryElement = document.querySelector("#country");
-const humidityElement = document.querySelector("#umidity span");
+const humidityElement = document.querySelector("#humidity span");
 const windElement = document.querySelector("#wind span");
+
+const weatherContainer = document.querySelector("#weather-data");
 //Funções
 const getWeatherData = async(city) => {
 
@@ -27,11 +29,13 @@ const showWeatherData = async (city) => {
 
     cityElement.innerText = data.name;
     tempElement.innerText = parseInt(data.main.temp);
-    descElement.innerText = data.weather[0].description;//ERRO!!!!! REVISAR!!
+    descElement.innerText = data.weather[0].description;
     weatherIconElement.setAttribute("src", `http://openweathermap.org/img/wn/${data.weather[0].icon}.png`);
     countryElement.setAttribute("src", apiCountryURL + data.sys.country);
     humidityElement.innerText = `${data.main.humidity}%`;
     windElement.innerText = `${data.wind.speed}km/h`;
+
+    weatherContainer.classList.remove("hide");
 
 
 };
@@ -42,4 +46,12 @@ searchBtn.addEventListener("click", (e) => {
     const city = cityInput.value;
 
     showWeatherData(city);
+});
+
+cityInput.addEventListener("keyup", (e) => {
+    if(e.code === "Enter"){
+        const city = e.target.value;
+        
+        showWeatherData(city);
+    }
 });
